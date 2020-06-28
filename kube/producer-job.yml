@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sample-producer
+spec:
+  template:
+    spec:
+      containers:
+      - name: sample-producer
+        image: meamma/sample-kafka-producer
+        args: ["50"]
+      restartPolicy: Never

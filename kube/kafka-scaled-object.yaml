@@ -1,0 +1,21 @@
+apiVersion: keda.k8s.io/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kafka-scaledobject
+  namespace: default
+  labels:
+    deploymentName: kafka-consumer-deployment # Required Name of the deployment we want to scale.
+spec:
+  scaleTargetRef:
+    deploymentName: kafka-consumer-deployment # Required Name of the deployment we want to scale.
+  pollingInterval: 1
+  minReplicaCount: 1   #Optional Default 0
+  maxReplicaCount: 10  #Optional Default 100
+  triggers:
+  - type: kafka
+    metadata:
+      # Required
+      bootstrapServers: kafka.kafka.svc.cluster.local:9092 # Kafka bootstrap server host and port
+      consumerGroup: my-group  # Make sure that this consumer group name is the same one as the one that is consuming topics
+      topic: my-topic
+      lagThreshold: "3" 
